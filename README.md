@@ -1,0 +1,1 @@
+For the UI design, I analyzed Meyer Distributing's current B2B portal. To align with the brand identity while improving the user experience, I adopted Meyer's core Navy Blue and Orange color scheme but modernized it using contemporary SaaS design principles (softer neutrals, Inter font, and improved whitespace)
