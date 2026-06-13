@@ -1,6 +1,30 @@
+<script lang="ts">
+  import { themeStore } from "$lib/state/theme.svelte";
+
+  const isDark = $derived(themeStore.isDark);
+
+  function handleThemeToggle(event: Event) {
+    const input = event.currentTarget;
+
+    if (!(input instanceof HTMLInputElement)) {
+      return;
+    }
+
+    themeStore.set(input.checked ? "dark" : "light");
+  }
+</script>
+
 <label class="switch">
   <span class="switch__track">
-    <input class="switch__input" type="checkbox" role="switch" />
+    <input
+      class="switch__input"
+      type="checkbox"
+      role="switch"
+      checked={isDark}
+      aria-checked={isDark}
+      aria-label="Dark mode"
+      onchange={handleThemeToggle}
+    />
     <span class="switch__icon" aria-hidden="true">
       <span class="switch__icon-part switch__icon-part--1"></span>
       <span class="switch__icon-part switch__icon-part--2"></span>
@@ -54,7 +78,6 @@
     font: inherit;
     cursor: pointer;
     transition: background-color var(--trans-dur) var(--trans-timing);
-    appearance: none;
     appearance: none;
   }
 

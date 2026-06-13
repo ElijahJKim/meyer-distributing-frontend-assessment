@@ -105,6 +105,6 @@
 	.pagination-page-active {
 		border-color: $color-primary;
 		background-color: $color-primary;
-		color: #fff;
+		color: $color-on-primary;
 	}
 </style>

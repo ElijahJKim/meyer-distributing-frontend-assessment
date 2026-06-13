@@ -391,7 +391,7 @@
     padding: 12px 20px;
     border-radius: $border-radius-md;
     background-color: $color-primary;
-    color: #fff;
+		color: $color-on-primary;
     font-size: 15px;
     font-weight: 600;
     text-decoration: none;

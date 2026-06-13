@@ -11,6 +11,9 @@ importers:
       '@lucide/svelte':
         specifier: ^1.18.0
         version: 1.18.0(svelte@5.47.0)
+      svelte5-rune-storage:
+        specifier: ^1.1.0
+        version: 1.1.0(svelte@5.47.0)
     devDependencies:
       '@eslint/compat':
         specifier: ^1.4.0
@@ -1613,6 +1616,11 @@ packages:
       svelte: ^3.55 || ^4.0.0-next.0 || ^4.0 || ^5.0.0-next.0
       typescript: ^4.9.4 || ^5.0.0
 
+  svelte5-rune-storage@1.1.0:
+    resolution: {integrity: sha512-aufcoZccZ9YTIe2VW86cUM1bTUPe9fLwtT1bK8GLz5hLmXkVDVm0Q+neP3X7SpvkQvJJUUgbFGVLLC9FtKM7qw==}
+    peerDependencies:
+      svelte: ^5.0.0
+
   svelte@5.47.0:
     resolution: {integrity: sha512-LRhAvzhvb4lHLNAcAMJZ2ifUSOif8OuItF4khbssrIeitj01GjpumeeauSnCeAGnSI+X6P2R3Z7S4c5STv4iQQ==}
     engines: {node: '>=18'}
@@ -3171,6 +3179,10 @@ snapshots:
       scule: 1.3.0
       svelte: 5.47.0
       typescript: 5.9.3
+
+  svelte5-rune-storage@1.1.0(svelte@5.47.0):
+    dependencies:
+      svelte: 5.47.0
 
   svelte@5.47.0:
     dependencies:

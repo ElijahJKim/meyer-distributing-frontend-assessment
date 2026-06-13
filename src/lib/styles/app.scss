@@ -1,7 +1,17 @@
+@use "./theme";
 @use "./reset";
 @use "./variables" as *;
 @use "./mixins" as *;
 
+body {
+	background-color: $color-bg-main;
+	color: $color-text-main;
+	font-family: $font-family-main;
+	transition:
+		background-color 0.2s ease,
+		color 0.2s ease;
+}
+
 .container {
-  @include container;
+	@include container;
 }
