@@ -2,7 +2,7 @@
 	import { X } from '@lucide/svelte';
 	import FilterSection from './FilterSection.svelte';
 	import type { FilterCategory, FilterOptions, ProductFilters } from '$lib/types/filters';
-	import { clickOutside } from '$lib/utils/attachment';
+	import { clickOutside } from '$lib/actions/attachment';
 	import { buildFilterPanelSections, toggleProductFilter } from '$lib/utils/product-filters';
 
 	interface Props {

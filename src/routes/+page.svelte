@@ -8,6 +8,10 @@
     buildFilterOptions,
     createEmptyProductFilters,
   } from "$lib/utils/product-filters";
+  import {
+    applyProductSort,
+    createDefaultProductSort,
+  } from "$lib/utils/product-sort";
 
   let { data } = $props<{
     data: {
@@ -17,19 +21,22 @@
   }>();
 
   let filters = $state(createEmptyProductFilters());
+  let sort = $state(createDefaultProductSort());
 
   const filterOptions = $derived(buildFilterOptions(data.products));
   const filteredProducts = $derived(
     applyProductFilters(data.products, filters),
   );
+  const displayedProducts = $derived(applyProductSort(filteredProducts, sort));
 </script>
 
 <main>
   <Hero />
   <Listing
-    productCount={filteredProducts.length}
+    productCount={displayedProducts.length}
     {filterOptions}
     bind:filters
+    bind:sort
   />
-  <ProductList products={filteredProducts} error={data.error} />
+  <ProductList products={displayedProducts} error={data.error} />
 </main>

@@ -1,16 +1,12 @@
 <script lang="ts">
   import ProductCard from "$lib/components/Product/ProductCard.svelte";
+  import PageSizeSelect from "$lib/components/PageSizeSelect.svelte";
   import Pagination from "$lib/components/Pagination.svelte";
+  import type { PageSize } from "$lib/types/pagination";
   import type { Product } from "$lib/types/product";
   import { parsePageParam, syncPageToUrl } from "$lib/utils/url-params";
   import { page } from "$app/state";
   import { tick } from "svelte";
-
-  const PAGE_SIZE_BY_BREAKPOINT = {
-    mobile: 8,
-    tablet: 12,
-    desktop: 16,
-  } as const;
 
   let {
     products,
@@ -20,22 +16,11 @@
     error?: string | null;
   } = $props();
 
-  let innerWidth = $state(0);
-  const isTablet = $derived(innerWidth >= 768);
-  const isDesktop = $derived(innerWidth >= 1200);
-
+  let pageSize = $state<PageSize>(12);
   let currentPage = $state(1);
   let productGridEl = $state<HTMLElement | null>(null);
   let previousProductCount = $state(-1);
-  let previousPageSize = $state(0);
-
-  const pageSize = $derived(
-    isDesktop
-      ? PAGE_SIZE_BY_BREAKPOINT.desktop
-      : isTablet
-        ? PAGE_SIZE_BY_BREAKPOINT.tablet
-        : PAGE_SIZE_BY_BREAKPOINT.mobile,
-  );
+  let previousPageSize = $state<PageSize | 0>(0);
 
   const totalPages = $derived(
     Math.max(1, Math.ceil(products.length / pageSize)),
@@ -108,8 +93,6 @@
   });
 </script>
 
-<svelte:window bind:innerWidth />
-
 <section class="product-list" aria-live="polite">
   <div class="container product-list-container">
     {#if error}
@@ -127,7 +110,10 @@
         {/each}
       </ul>
 
-      <Pagination {currentPage} {totalPages} onPageChange={handlePageChange} />
+      <div class="product-list-footer">
+        <PageSizeSelect bind:pageSize />
+        <Pagination {currentPage} {totalPages} onPageChange={handlePageChange} />
+      </div>
     {/if}
   </div>
 </section>
@@ -169,5 +155,14 @@
     display: flex;
     width: 100%;
     min-width: 0;
+  }
+
+  .product-list-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 64px;
   }
 </style>

@@ -68,7 +68,6 @@
 		justify-content: center;
 		align-items: center;
 		gap: 12px;
-		padding-bottom: 64px;
 	}
 
 	.pagination-list {
