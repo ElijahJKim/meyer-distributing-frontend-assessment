@@ -1,7 +1,0 @@
-@use "./reset";
-@use "./variables" as *;
-@use "./mixins" as *;
-
-.container {
-  @include container;
-}
