@@ -1,9 +1,16 @@
 <script lang="ts">
   import RatingStars from "./RatingStars.svelte";
   import type { Product } from "$lib/types/product";
+  import { formatProductPrice } from "$lib/utils/product-format";
   import { getProductImageSources } from "$lib/utils/product-image";
 
-  let { product }: { product: Product } = $props();
+  let {
+    product,
+    onViewMore,
+  }: {
+    product: Product;
+    onViewMore?: (product: Product) => void;
+  } = $props();
 
   const imageSources = $derived(getProductImageSources(product));
 
@@ -19,10 +26,6 @@
     }
 
     image.src = fallback;
-  }
-
-  function formatPrice(price: string): string {
-    return price.startsWith("$") ? price : `$${price}`;
   }
 </script>
 
@@ -49,7 +52,7 @@
   <h3 class="product-card-name">{product.name}</h3>
 
   <div class="product-card-meta">
-    <p class="product-card-price">{formatPrice(product.price)}</p>
+    <p class="product-card-price">{formatProductPrice(product.price)}</p>
     <RatingStars rating={product.rating} />
   </div>
 
@@ -69,7 +72,13 @@
     {/each}
   </div>
 
-  <button class="product-card-view-more" type="button">View More</button>
+  <button
+    class="product-card-view-more"
+    type="button"
+    onclick={() => onViewMore?.(product)}
+  >
+    View More
+  </button>
 </article>
 
 <style lang="scss">

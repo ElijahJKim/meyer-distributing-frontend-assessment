@@ -1,5 +1,6 @@
 <script lang="ts">
   import ProductCard from "$lib/components/Product/ProductCard.svelte";
+  import ProductModal from "$lib/components/Product/ProductModal.svelte";
   import PageSizeSelect from "$lib/components/PageSizeSelect.svelte";
   import Pagination from "$lib/components/Pagination.svelte";
   import type { PageSize } from "$lib/types/pagination";
@@ -18,6 +19,7 @@
 
   let pageSize = $state<PageSize>(12);
   let currentPage = $state(1);
+  let selectedProduct = $state<Product | null>(null);
   let productGridEl = $state<HTMLElement | null>(null);
   let previousProductCount = $state(-1);
   let previousPageSize = $state<PageSize | 0>(0);
@@ -48,6 +50,14 @@
 
   async function handlePageChange(nextPage: number) {
     await setPage(nextPage, true);
+  }
+
+  function openProductModal(product: Product) {
+    selectedProduct = product;
+  }
+
+  function closeProductModal() {
+    selectedProduct = null;
   }
 
   $effect(() => {
@@ -105,7 +115,7 @@
       <ul class="product-grid" bind:this={productGridEl}>
         {#each paginatedProducts as product (product.id)}
           <li class="product-grid-item">
-            <ProductCard {product} />
+            <ProductCard {product} onViewMore={openProductModal} />
           </li>
         {/each}
       </ul>
@@ -117,6 +127,10 @@
     {/if}
   </div>
 </section>
+
+{#if selectedProduct}
+  <ProductModal product={selectedProduct} onClose={closeProductModal} />
+{/if}
 
 <style lang="scss">
   .product-list-container {

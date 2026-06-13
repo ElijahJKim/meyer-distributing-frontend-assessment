@@ -8,9 +8,6 @@
     <h1>Meyer Distributing</h1>
     <div class="header-actions">
       <Darkmode />
-      <button type="button" class="cart-button" aria-label="Shopping cart">
-        <ShoppingCart strokeWidth={1.75} aria-hidden="true" />
-      </button>
     </div>
   </div>
 </header>
@@ -58,33 +55,6 @@
 
       :global(.switch) {
         font-size: 22px;
-      }
-    }
-  }
-
-  .cart-button {
-    @include flex-center;
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background-color: transparent;
-    color: inherit;
-    cursor: pointer;
-
-    :global(svg) {
-      width: 22px;
-      height: 22px;
-    }
-
-    @include tablet-up {
-      width: 48px;
-      height: 48px;
-
-      :global(svg) {
-        width: 32px;
-        height: 32px;
       }
     }
   }
