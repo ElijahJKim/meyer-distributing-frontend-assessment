@@ -6,42 +6,31 @@
   import Pagination from "$lib/components/Pagination.svelte";
   import type { PageSize } from "$lib/types/pagination";
   import type { Product } from "$lib/types/product";
-  import { parsePageParam, syncPageToUrl } from "$lib/utils/url-params";
-  import { page } from "$app/state";
   import { tick } from "svelte";
 
   let {
     products = [],
-    error = null,
     loading = false,
+    pageSize = $bindable(12 as PageSize),
+    currentPage = $bindable(1),
+    totalPages = 1,
   }: {
     products?: Product[];
-    error?: string | null;
     loading?: boolean;
+    pageSize?: PageSize;
+    currentPage?: number;
+    totalPages?: number;
   } = $props();
 
-  let pageSize = $state<PageSize>(12);
-  let currentPage = $state(1);
   let selectedProduct = $state<Product | null>(null);
   let productGridEl = $state<HTMLElement | null>(null);
-  let previousProductCount = $state(-1);
-  let previousPageSize = $state<PageSize | 0>(0);
-
-  const totalPages = $derived(
-    Math.max(1, Math.ceil(products.length / pageSize)),
-  );
 
   const paginatedProducts = $derived(
     products.slice((currentPage - 1) * pageSize, currentPage * pageSize),
   );
 
-  function syncCurrentPageFromUrl() {
-    currentPage = parsePageParam(page.url.searchParams.get("page"), totalPages);
-  }
-
   async function setPage(nextPage: number, scroll = false) {
     currentPage = nextPage;
-    await syncPageToUrl(page.url, nextPage);
 
     if (!scroll) {
       return;
@@ -62,48 +51,6 @@
   function closeProductModal() {
     selectedProduct = null;
   }
-
-  $effect(() => {
-    page.url.searchParams.get("page");
-    totalPages;
-    syncCurrentPageFromUrl();
-  });
-
-  $effect(() => {
-    const count = products.length;
-
-    if (previousProductCount === -1) {
-      previousProductCount = count;
-      return;
-    }
-
-    if (count === previousProductCount) {
-      return;
-    }
-
-    previousProductCount = count;
-    void setPage(1);
-  });
-
-  $effect(() => {
-    if (previousPageSize === 0) {
-      previousPageSize = pageSize;
-      return;
-    }
-
-    if (pageSize === previousPageSize) {
-      return;
-    }
-
-    previousPageSize = pageSize;
-    void setPage(1);
-  });
-
-  $effect(() => {
-    if (currentPage > totalPages) {
-      void setPage(totalPages);
-    }
-  });
 </script>
 
 <section class="product-list" aria-live="polite">
@@ -116,10 +63,6 @@
           </li>
         {/each}
       </ul>
-    {:else if error}
-      <p class="product-list-message" role="alert">
-        {error}
-      </p>
     {:else if products.length === 0}
       <p class="product-list-message">No products found.</p>
     {:else}
