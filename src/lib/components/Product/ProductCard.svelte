@@ -1,5 +1,5 @@
 <script lang="ts">
-  import RatingStars from "$lib/components/RatingStars.svelte";
+  import RatingStars from "./RatingStars.svelte";
   import type { Product } from "$lib/types/product";
   import { getProductImageSources } from "$lib/utils/product-image";
 
@@ -57,13 +57,15 @@
     class="product-card-colors"
     class:product-card-colors-empty={product.product_colors.length === 0}
   >
-    {#each product.product_colors as color (color.hex_value + color.colour_name)}
-      <span
-        class="product-card-color"
-        style:background-color={color.hex_value}
-        title={color.colour_name}
-        aria-label={color.colour_name}
-      ></span>
+    {#each product.product_colors as color, index (index)}
+      {#if color.hex_value}
+        <span
+          class="product-card-color"
+          style:background-color={color.hex_value}
+          title={color.colour_name ?? undefined}
+          aria-label={color.colour_name ?? "Product color"}
+        ></span>
+      {/if}
     {/each}
   </div>
 

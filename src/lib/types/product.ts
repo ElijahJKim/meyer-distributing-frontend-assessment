@@ -1,6 +1,6 @@
 export interface ProductColor {
-  hex_value: string;
-  colour_name: string;
+  hex_value: string | null;
+  colour_name: string | null;
 }
 
 export interface Product {

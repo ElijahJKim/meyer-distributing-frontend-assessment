@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Card from "$lib/components/Card.svelte";
+  import ProductCard from "$lib/components/Product/ProductCard.svelte";
   import Pagination from "$lib/components/Pagination.svelte";
   import type { Product } from "$lib/types/product";
   import { parsePageParam, syncPageToUrl } from "$lib/utils/url-params";
@@ -122,7 +122,7 @@
       <ul class="product-grid" bind:this={productGridEl}>
         {#each paginatedProducts as product (product.id)}
           <li class="product-grid-item">
-            <Card {product} />
+            <ProductCard {product} />
           </li>
         {/each}
       </ul>
