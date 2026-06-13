@@ -15,28 +15,36 @@
 
   let { data } = $props<{
     data: {
-      products: Product[];
-      error: string | null;
+      products: Promise<Product[]>;
     };
   }>();
 
   let filters = $state(createEmptyProductFilters());
   let sort = $state(createDefaultProductSort());
 
-  const filterOptions = $derived(buildFilterOptions(data.products));
-  const filteredProducts = $derived(
-    applyProductFilters(data.products, filters),
-  );
-  const displayedProducts = $derived(applyProductSort(filteredProducts, sort));
+  function getLoadErrorMessage(error: unknown): string {
+    return error instanceof Error ? error.message : "Failed to load products";
+  }
 </script>
 
 <main>
   <Hero />
-  <Listing
-    productCount={displayedProducts.length}
-    {filterOptions}
-    bind:filters
-    bind:sort
-  />
-  <ProductList products={displayedProducts} error={data.error} />
+
+  {#await data.products}
+    <ProductList loading />
+  {:then products}
+    {@const filterOptions = buildFilterOptions(products)}
+    {@const filteredProducts = applyProductFilters(products, filters)}
+    {@const displayedProducts = applyProductSort(filteredProducts, sort)}
+
+    <Listing
+      productCount={displayedProducts.length}
+      {filterOptions}
+      bind:filters
+      bind:sort
+    />
+    <ProductList products={displayedProducts} />
+  {:catch error}
+    <ProductList products={[]} error={getLoadErrorMessage(error)} />
+  {/await}
 </main>

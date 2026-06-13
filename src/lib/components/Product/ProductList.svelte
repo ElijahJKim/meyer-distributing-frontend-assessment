@@ -1,5 +1,6 @@
 <script lang="ts">
   import ProductCard from "$lib/components/Product/ProductCard.svelte";
+  import ProductCardSkeleton from "$lib/components/Product/ProductCardSkeleton.svelte";
   import ProductModal from "$lib/components/Product/ProductModal.svelte";
   import PageSizeSelect from "$lib/components/PageSizeSelect.svelte";
   import Pagination from "$lib/components/Pagination.svelte";
@@ -10,11 +11,13 @@
   import { tick } from "svelte";
 
   let {
-    products,
+    products = [],
     error = null,
+    loading = false,
   }: {
-    products: Product[];
+    products?: Product[];
     error?: string | null;
+    loading?: boolean;
   } = $props();
 
   let pageSize = $state<PageSize>(12);
@@ -105,8 +108,16 @@
 
 <section class="product-list" aria-live="polite">
   <div class="container product-list-container">
-    {#if error}
-      <p class="product-list-message product-list-message-error" role="alert">
+    {#if loading}
+      <ul class="product-grid" aria-busy="true" aria-label="Loading products">
+        {#each Array.from({ length: pageSize }, (_, index) => index) as index (index)}
+          <li class="product-grid-item">
+            <ProductCardSkeleton />
+          </li>
+        {/each}
+      </ul>
+    {:else if error}
+      <p class="product-list-message" role="alert">
         {error}
       </p>
     {:else if products.length === 0}
@@ -122,7 +133,11 @@
 
       <div class="product-list-footer">
         <PageSizeSelect bind:pageSize />
-        <Pagination {currentPage} {totalPages} onPageChange={handlePageChange} />
+        <Pagination
+          {currentPage}
+          {totalPages}
+          onPageChange={handlePageChange}
+        />
       </div>
     {/if}
   </div>
@@ -141,10 +156,6 @@
   .product-list-message {
     padding: 32px 0;
     text-align: center;
-  }
-
-  .product-list-message-error {
-    color: $color-error;
   }
 
   .product-grid {
