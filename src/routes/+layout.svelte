@@ -7,12 +7,6 @@
 
   let { data, children } = $props();
 
-  themeStore.init(data.theme);
-
-  $effect(() => {
-    themeStore.init(data.theme);
-  });
-
   $effect(() => {
     if (!browser) {
       return;
@@ -22,8 +16,16 @@
   });
 </script>
 
+<svelte:head>
+  <title>Meyer Distributing</title>
+  <meta
+    name="description"
+    content="Browse Meyer's catalog with real-time stock and account pricing."
+  />
+</svelte:head>
+
 <div class="site">
-  <Header />
+  <Header theme={data.theme} />
   {@render children()}
   <Footer />
 </div>

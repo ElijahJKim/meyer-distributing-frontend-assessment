@@ -5,7 +5,8 @@ import {
 } from "$lib/utils/theme";
 
 class ThemeStore {
-  value = $state<Theme>("light");
+  value = $state<Theme>("dark");
+  initialized = $state(false);
 
   get isDark(): boolean {
     return this.value === "dark";
@@ -13,6 +14,7 @@ class ThemeStore {
 
   init(next: Theme): void {
     this.value = next;
+    this.initialized = true;
   }
 
   set(next: Theme): void {

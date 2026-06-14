@@ -9,5 +9,5 @@ export function parseTheme(value: string | undefined | null): Theme {
 		return value;
 	}
 
-	return 'light';
+	return 'dark';
 }

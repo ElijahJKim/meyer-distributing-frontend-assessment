@@ -4,9 +4,6 @@
   <div
     class="product-card-skeleton-line product-card-skeleton-line--title skeleton-shimmer"
   ></div>
-  <div
-    class="product-card-skeleton-line product-card-skeleton-line--title-short skeleton-shimmer"
-  ></div>
 
   <div class="product-card-skeleton-meta">
     <div
@@ -33,7 +30,7 @@
     width: 100%;
     min-width: 0;
     height: 100%;
-    min-height: 416px;
+    min-height: 350px;
   }
 
   .product-card-skeleton-media {
@@ -48,12 +45,7 @@
 
     &--title {
       width: 100%;
-      height: 21px;
-    }
-
-    &--title-short {
-      width: 72%;
-      height: 21px;
+      min-height: 42px;
     }
 
     &--price {

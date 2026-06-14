@@ -1,13 +1,15 @@
-<script>
-  import { ShoppingCart } from "@lucide/svelte";
+<script lang="ts">
+  import type { Theme } from "$lib/utils/theme";
   import Darkmode from "./Darkmode.svelte";
+
+  let { theme }: { theme: Theme } = $props();
 </script>
 
 <header class="header">
   <div class="container header-inner">
     <h1>Meyer Distributing</h1>
     <div class="header-actions">
-      <Darkmode />
+      <Darkmode {theme} />
     </div>
   </div>
 </header>

@@ -1,7 +1,16 @@
 <script lang="ts">
   import { themeStore } from "$lib/state/theme.svelte";
+  import type { Theme } from "$lib/utils/theme";
 
-  const isDark = $derived(themeStore.isDark);
+  let { theme }: { theme: Theme } = $props();
+
+  $effect.pre(() => {
+    themeStore.init(theme);
+  });
+
+  const isDark = $derived(
+    themeStore.initialized ? themeStore.isDark : theme === "dark",
+  );
 
   function handleThemeToggle(event: Event) {
     const input = event.currentTarget;
