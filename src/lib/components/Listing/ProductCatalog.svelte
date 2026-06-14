@@ -1,10 +1,14 @@
 <script lang="ts">
   import Listing from "$lib/components/Listing/Listing.svelte";
+  import RecentlyViewed from "$lib/components/Product/RecentlyViewed.svelte";
   import ProductList from "$lib/components/Product/ProductList.svelte";
+  import ProductModal from "$lib/components/Product/ProductModal.svelte";
+  import { trackRecentlyViewed } from "$lib/state/recently-viewed.svelte";
   import type { PageSize } from "$lib/types/pagination";
   import type { Product } from "$lib/types/product";
   import type { ProductSortState } from "$lib/types/sort";
   import type { ProductFilters } from "$lib/types/filters";
+  import type { RecentlyViewedItem } from "$lib/types/recently-viewed";
   import {
     applyProductFilters,
     buildFilterOptions,
@@ -31,6 +35,7 @@
   let pageSize = $state<PageSize>(initialQuery.pageSize);
   let currentPage = $state(initialQuery.page);
   let lastSyncedHref = $state(getUrlHref(page.url));
+  let selectedProduct = $state<Product | null>(null);
 
   const filterOptions = $derived(buildFilterOptions(products));
   const filteredProducts = $derived(applyProductFilters(products, filters));
@@ -49,6 +54,25 @@
       sort: nextSort,
       pageSize: nextPageSize,
     });
+  }
+
+  function openProduct(product: Product): void {
+    trackRecentlyViewed(product);
+    selectedProduct = product;
+  }
+
+  function openRecentItem(item: RecentlyViewedItem): void {
+    const product = products.find((entry) => entry.id === item.id);
+
+    if (!product) {
+      return;
+    }
+
+    openProduct(product);
+  }
+
+  function closeProductModal(): void {
+    selectedProduct = null;
   }
 
   $effect(() => {
@@ -111,6 +135,8 @@
   });
 </script>
 
+<RecentlyViewed onSelect={openRecentItem} />
+
 <Listing
   productCount={displayedProducts.length}
   {filterOptions}
@@ -119,7 +145,12 @@
 />
 <ProductList
   products={displayedProducts}
+  onViewProduct={openProduct}
   bind:pageSize
   bind:currentPage
   {totalPages}
 />
+
+{#if selectedProduct}
+  <ProductModal product={selectedProduct} onClose={closeProductModal} />
+{/if}

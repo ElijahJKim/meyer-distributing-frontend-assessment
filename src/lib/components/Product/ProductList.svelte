@@ -1,7 +1,6 @@
 <script lang="ts">
   import ProductCard from "$lib/components/Product/ProductCard.svelte";
   import ProductCardSkeleton from "$lib/components/Product/ProductCardSkeleton.svelte";
-  import ProductModal from "$lib/components/Product/ProductModal.svelte";
   import PageSizeSelect from "$lib/components/PageSizeSelect.svelte";
   import Pagination from "$lib/components/Pagination.svelte";
   import type { PageSize } from "$lib/types/pagination";
@@ -11,18 +10,19 @@
   let {
     products = [],
     loading = false,
+    onViewProduct = undefined,
     pageSize = $bindable(12 as PageSize),
     currentPage = $bindable(1),
     totalPages = 1,
   }: {
     products?: Product[];
     loading?: boolean;
+    onViewProduct?: (product: Product) => void;
     pageSize?: PageSize;
     currentPage?: number;
     totalPages?: number;
   } = $props();
 
-  let selectedProduct = $state<Product | null>(null);
   let productGridEl = $state<HTMLElement | null>(null);
 
   const paginatedProducts = $derived(
@@ -43,14 +43,6 @@
   async function handlePageChange(nextPage: number) {
     await setPage(nextPage, true);
   }
-
-  function openProductModal(product: Product) {
-    selectedProduct = product;
-  }
-
-  function closeProductModal() {
-    selectedProduct = null;
-  }
 </script>
 
 <section class="product-list" aria-live="polite">
@@ -69,7 +61,7 @@
       <ul class="product-grid" bind:this={productGridEl}>
         {#each paginatedProducts as product (product.id)}
           <li class="product-grid-item">
-            <ProductCard {product} onViewMore={openProductModal} />
+            <ProductCard {product} onViewMore={onViewProduct} />
           </li>
         {/each}
       </ul>
@@ -85,10 +77,6 @@
     {/if}
   </div>
 </section>
-
-{#if selectedProduct}
-  <ProductModal product={selectedProduct} onClose={closeProductModal} />
-{/if}
 
 <style lang="scss">
   .product-list-container {

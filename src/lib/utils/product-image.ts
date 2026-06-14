@@ -1,5 +1,7 @@
 import type { Product } from '$lib/types/product';
 
+export type ProductImageSource = Pick<Product, 'image_link' | 'api_featured_image'>;
+
 export function normalizeImageUrl(url: string): string {
 	if (!url) {
 		return '';
@@ -12,7 +14,7 @@ export function normalizeImageUrl(url: string): string {
 	return url;
 }
 
-export function getProductImageSources(product: Product): {
+export function getProductImageSources(product: ProductImageSource): {
 	primary: string;
 	fallback: string | null;
 } {

@@ -90,7 +90,7 @@
     width: 100%;
     min-width: 0;
     height: 100%;
-    min-height: 416px;
+    min-height: 350px;
   }
 
   .product-card-media {
@@ -171,7 +171,6 @@
   .product-card-view-more {
     width: 100%;
     height: 48px;
-    margin-top: auto;
     padding: 12px 16px;
     border: 1px solid $color-border;
     border-radius: $border-radius-md;
