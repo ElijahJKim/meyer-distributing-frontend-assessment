@@ -26,7 +26,7 @@ Ensure you have the following installed:
 
 ```bash
 # Clone the repository
-git clone -b dev https://github.com/ElijahJKim/meyer-distributing-frontend-assessment.git
+git clone https://github.com/ElijahJKim/meyer-distributing-frontend-assessment.git
 
 # Navigate to the directory
 cd meyer-distributing-frontend-assessment
